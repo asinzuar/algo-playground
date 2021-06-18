@@ -27,6 +27,9 @@ public class LinkedList {
                 }
                 return true;
             }
+
+            prevPtr = ptr;
+            ptr = ptr.next;
         }
 
         return false;
@@ -43,6 +46,24 @@ public class LinkedList {
         }
 
         return false;
+    }
+
+    public String toString() {
+        Node ptr = head;
+        StringBuilder sb = new StringBuilder();
+        boolean isFirst = true;
+        while (ptr != null) {
+            if (!isFirst) {
+                sb.append(", ");
+            } else {
+                isFirst = false;
+            }
+
+            sb.append("(").append(ptr.data).append(", ").append(ptr.next).append(")");
+            ptr = ptr.next;
+        }
+
+        return sb.toString();
     }
 }
 
