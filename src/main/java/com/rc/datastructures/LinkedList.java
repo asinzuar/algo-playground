@@ -14,8 +14,22 @@ public class LinkedList {
         head.next = temp;
     }
 
-    public void remove(String data) {
+    public boolean remove(String data) {
+        Node prevPtr = null;
+        Node ptr = head;
+        while (ptr != null) {
+            if (ptr.data.equals(data)) {
+                if (prevPtr == null) {
+                    // remove head
+                    head = head.next;
+                } else {
+                    prevPtr.next = ptr.next;
+                }
+                return true;
+            }
+        }
 
+        return false;
     }
 
     public boolean search(String data) {
