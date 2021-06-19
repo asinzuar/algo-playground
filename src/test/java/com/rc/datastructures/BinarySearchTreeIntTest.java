@@ -21,6 +21,9 @@ public class BinarySearchTreeIntTest {
 
     @Test
     public void add() {
+        tree.add(20);
+        List<Integer> expected = List.of(15, 20, 25, 32, 45, 50);
+        Assert.assertEquals(expected, tree.inorderTraversal());
     }
 
     @Test

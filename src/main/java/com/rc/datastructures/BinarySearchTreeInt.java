@@ -151,11 +151,11 @@ public class BinarySearchTreeInt {
         }
 
         for (var entry: levelMap.entrySet()) {
-            var entriesInSequence = entry.getValue().stream()
-                    //.sorted(Comparator.comparing(indentMap::get))
-                    .collect(Collectors.toList());
+            // Since they were populated using inorder traversal, they will always be
+            // in order from left to right indent
+            var levelEntries = entry.getValue();
 
-            var indents = entriesInSequence.stream()
+            var indents = levelEntries.stream()
                     .map(indentMap::get)
                     .collect(Collectors.toList());
 
@@ -166,14 +166,11 @@ public class BinarySearchTreeInt {
                 previous = indent;
             }
 
-            IntStream.range(0, entriesInSequence.size())
-                    .forEach(i -> printAtOffset(entriesInSequence.get(i), posIncrements.get(i)));
+            IntStream.range(0, levelEntries.size())
+                    .forEach(i -> printAtOffset(levelEntries.get(i), posIncrements.get(i)));
 
             System.out.println();
         }
-
-//        System.out.println(levelMap);
-//        System.out.println(indentMap);
     }
 
     private void printAtOffset(int data, int indent) {
@@ -188,33 +185,14 @@ public class BinarySearchTreeInt {
 
         determineLevelAndIndent(root.getLeftChild(), depth + 1, indent - 1, levelMap, indentMap);
 
-        List<Integer> levelList = levelMap.get(depth);
-        if (levelList == null) {
-            levelList = new ArrayList<>();
-            levelMap.put(depth, levelList);
-        }
-        levelList.add(root.data);
+        levelMap.computeIfAbsent(depth, k -> new ArrayList<>()).add(root.data);
         indentMap.put(root.data, indent);
 
         determineLevelAndIndent(root.getRightChild(), depth + 1, indent + 1, levelMap, indentMap);
     }
 
-    private void _printInorderV1(Node root, int depth, int maxDepth) {
-        if (root == null) {
-            return;
-        }
-
-        if (maxDepth > depth) {
-            _printInorderV1(root.getLeftChild(), depth + 1, maxDepth);
-        }
-
-        StringBuilder sb = new StringBuilder();
-        IntStream.range(0, maxDepth - depth + 1).forEach(n -> sb.append("  "));
-        System.out.println(sb.append(root.data));
-
-        if (maxDepth > depth) {
-            _printInorderV1(root.getRightChild(), depth + 1, maxDepth);
-        }
+    public int getSize() {
+        return size;
     }
 
     private static class Node {
@@ -240,10 +218,6 @@ public class BinarySearchTreeInt {
 
         public Node getRightChild() {
             return rightChild;
-        }
-
-        public int getData() {
-            return data;
         }
     }
 }
