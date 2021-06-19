@@ -5,16 +5,19 @@ import java.util.NoSuchElementException;
 
 public class LinkedList<T> implements Iterable<T> {
     private Node<T> head;
+    private int size = 0;
 
     public void addToHead(T data) {
         if (head == null) {
             head = new Node(data, null);
+            size++;
             return;
         }
 
         Node temp = head;
         head = new Node(data);
         head.next = temp;
+        size++;
     }
 
     public boolean remove(T data) {
@@ -28,6 +31,7 @@ public class LinkedList<T> implements Iterable<T> {
                 } else {
                     prevPtr.next = ptr.next;
                 }
+                size--;
                 return true;
             }
 
@@ -49,6 +53,10 @@ public class LinkedList<T> implements Iterable<T> {
         }
 
         return false;
+    }
+
+    public int getSize() {
+        return size;
     }
 
     public String toString() {

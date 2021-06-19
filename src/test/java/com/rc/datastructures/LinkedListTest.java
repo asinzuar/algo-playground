@@ -32,6 +32,7 @@ public class LinkedListTest {
         Assert.assertFalse(list.search("Quincy"));
         list.addToHead("Quincy");
         Assert.assertTrue(list.search("Quincy"));
+        Assert.assertEquals(5, list.getSize());
     }
 
     @Test
@@ -39,6 +40,7 @@ public class LinkedListTest {
         Assert.assertTrue(list.search("John"));
         Assert.assertTrue(list.remove("John"));
         Assert.assertFalse(list.search("John"));
+        Assert.assertEquals(3, list.getSize());
     }
 
     @Test
@@ -56,5 +58,10 @@ public class LinkedListTest {
         }
 
         Assert.assertEquals(expected, result);
+    }
+
+    @Test
+    public void getSize() {
+        Assert.assertEquals(4, list.getSize());
     }
 }
