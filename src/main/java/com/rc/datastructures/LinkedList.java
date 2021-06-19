@@ -1,9 +1,12 @@
 package com.rc.datastructures;
 
-public class LinkedList {
-    private Node head;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-    public void addToHead(String data) {
+public class LinkedList<T> implements Iterable<T> {
+    private Node<T> head;
+
+    public void addToHead(T data) {
         if (head == null) {
             head = new Node(data, null);
             return;
@@ -14,7 +17,7 @@ public class LinkedList {
         head.next = temp;
     }
 
-    public boolean remove(String data) {
+    public boolean remove(T data) {
         Node prevPtr = null;
         Node ptr = head;
         while (ptr != null) {
@@ -35,7 +38,7 @@ public class LinkedList {
         return false;
     }
 
-    public boolean search(String data) {
+    public boolean search(T data) {
         Node ptr = head;
         while (ptr != null) {
             if (ptr.data.equals(data)) {
@@ -65,18 +68,46 @@ public class LinkedList {
 
         return sb.toString();
     }
-}
 
-class Node {
-    final String data;
-    Node next;
-
-    public Node(String data) {
-        this.data = data;
+    @Override
+    public Iterator<T> iterator() {
+        return new Itr();
     }
 
-    public Node(String data, Node next) {
-        this.data = data;
-        this.next = next;
+    private static class Node<T> {
+        final T data;
+        Node next;
+
+        public Node(T data) {
+            this.data = data;
+        }
+
+        public Node(T data, Node next) {
+            this.data = data;
+            this.next = next;
+        }
+    }
+
+    private class Itr implements Iterator<T> {
+        Node cursor = head;
+
+        Itr() {
+        }
+
+        @Override
+        public boolean hasNext() {
+            return cursor != null;
+        }
+
+        @Override
+        public T next() {
+            if (cursor == null) {
+                throw new NoSuchElementException();
+            }
+
+            Node ptr = cursor;
+            cursor = cursor.next;
+            return (T) ptr.data;
+        }
     }
 }
